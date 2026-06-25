@@ -1,0 +1,3 @@
+echo "youtube-transcript-api" >> requirements.txt
+echo "google-api-python-client" >> requirements.txt
+echo "python-dotenv" >> requirements.txt
