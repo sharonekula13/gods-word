@@ -418,8 +418,8 @@ def ask_gods_word(question):
         return "I'm here for you! How can I help you today? 🕊️"
     return content
 
-@st.cache_data(ttl=86400)
-def get_verse_of_the_day():
+@st.cache_data
+def get_verse_of_the_day(today_date):
     popular_verses = [
         ("John 3:16", "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life."),
         ("Jeremiah 29:11", "For I know the thoughts that I think toward you, saith the LORD, thoughts of peace, and not of evil, to give you an expected end."),
@@ -564,7 +564,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-verse_ref, verse_text = get_verse_of_the_day()
+verse_ref, verse_text = get_verse_of_the_day(str(date.today()))
 st.markdown(
     "<div class='verse-card'>"
     "<div class='verse-eyebrow'>Verse of the Day</div>"
