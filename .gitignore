@@ -1,3 +1,8 @@
 .env
 __pycache__/
 *.pyc
+transcripts/
+processed/
+chroma_db/
+bible.json
+*.json
