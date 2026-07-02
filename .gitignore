@@ -6,3 +6,5 @@ processed/
 chroma_db/
 bible.json
 *.json
+favourites.json
+prayer_journal.json
