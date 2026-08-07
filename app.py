@@ -48,6 +48,7 @@ THEMES = {
 
 st.set_page_config(page_title="Gods Word", page_icon="🕊️", layout="wide")
 
+# Session state
 if "messages" not in st.session_state:
     st.session_state.messages = []
 if "show_journal" not in st.session_state:
@@ -57,6 +58,7 @@ if "theme" not in st.session_state:
 
 FAVOURITES_FILE = "favourites.json"
 JOURNAL_FILE = "prayer_journal.json"
+USER_NAME_FILE = "user_name.json"
 
 def load_json(path):
     if os.path.exists(path):
@@ -72,6 +74,9 @@ if "favourites" not in st.session_state:
     st.session_state.favourites = load_json(FAVOURITES_FILE)
 if "journal" not in st.session_state:
     st.session_state.journal = load_json(JOURNAL_FILE)
+if "user_name" not in st.session_state:
+    name_data = load_json(USER_NAME_FILE)
+    st.session_state.user_name = name_data.get("name", "") if isinstance(name_data, dict) else ""
 
 t = THEMES[st.session_state.theme]
 
@@ -85,13 +90,15 @@ st.markdown("""
     .block-container { padding-top: 2rem !important; padding-bottom: 7rem !important; max-width: 860px; padding-left: 2rem !important; padding-right: 2rem !important; }
     section[data-testid="stSidebar"] { background: """ + t["sidebar"] + """ !important; border-right: 0.5px solid """ + t["border"] + """; }
 
-    /* Bottom bar & chat input */
+    /* Bottom bar */
     [data-testid="stBottom"] { background: """ + t["bg"] + """ !important; }
     [data-testid="stBottom"] > div { background: """ + t["bg"] + """ !important; }
     [data-testid="stBottomBlockContainer"] { background: """ + t["bg"] + """ !important; }
     .stBottomBlockContainer { background: """ + t["bg"] + """ !important; }
     .stBottomBlockContainer > div { background: """ + t["bg"] + """ !important; }
     .stChatFloatingInputContainer { background: """ + t["bg"] + """ !important; }
+
+    /* Chat input */
     .stChatInput { background: """ + t["bg"] + """ !important; position: fixed; bottom: 1.4rem; left: 50%; transform: translateX(-50%); width: min(660px, 88%) !important; }
     .stChatInput > div { background: """ + t["card"] + """ !important; border: 1px solid """ + t["border"] + """ !important; border-radius: 28px !important; box-shadow: 0 4px 20px """ + t["shadow"] + """ !important; transition: border-color 0.25s !important; }
     .stChatInput > div:focus-within { border-color: """ + t["accent"] + """80 !important; }
@@ -118,6 +125,12 @@ st.markdown("""
     .gw-title { font-family:'Lora',serif; font-weight:600; font-size:2.4rem; color:""" + t["text"] + """; letter-spacing:0.3px; margin:0.25rem 0 0.1rem; }
     .gw-sub { color:""" + t["subtext"] + """; font-size:0.88rem; letter-spacing:0.4px; }
     .gw-rule { width:40px; height:1.5px; margin:0.8rem auto 0; background: linear-gradient(90deg,transparent,""" + t["accent"] + """,transparent); opacity:0.55; }
+
+    /* Welcome screen */
+    .welcome-wrap { text-align:center; padding: 5rem 2rem 2rem; animation: fade-up 0.6s ease-out; }
+    .welcome-dove { font-size:3rem; animation: dove-glow 4s ease-in-out infinite; display:inline-block; margin-bottom:1rem; }
+    .welcome-title { font-family:'Lora',serif; font-size:2.2rem; font-weight:600; color:""" + t["text"] + """; margin-bottom:0.5rem; }
+    .welcome-sub { color:""" + t["subtext"] + """; font-size:0.95rem; margin-bottom:2rem; }
 
     /* Verse card */
     .verse-card { background: """ + t["card"] + """; border: 0.5px solid """ + t["border"] + """; border-radius: 18px; padding: 1.4rem 1.8rem; position: relative; overflow: hidden; animation: card-in 0.7s cubic-bezier(0.22,1,0.36,1); margin-bottom: 0.6rem; }
@@ -165,13 +178,21 @@ st.markdown("""
     .sb-fav-ref { font-size:0.72rem; font-weight:500; color:""" + t["accent"] + """; margin-bottom:2px; }
     .sb-fav-text { font-size:0.72rem; color:""" + t["muted"] + """; font-style:italic; line-height:1.4; }
 
-    /* Buttons — sidebar style */
+    /* Buttons */
     .stButton button { background:transparent !important; color:""" + t["subtext"] + """ !important; border: 0.5px solid """ + t["border"] + """ !important; border-radius:8px !important; font-size:0.78rem !important; font-weight:400 !important; padding: 7px 12px !important; transition:all 0.15s !important; letter-spacing:0.2px !important; white-space:nowrap !important; }
     .stButton button:hover { background:""" + t["card"] + """ !important; color:""" + t["text"] + """ !important; border-color:""" + t["accent"] + """50 !important; transform:none !important; }
 
-    /* Save verse button — distinct style */
+    /* Save verse button */
     .save-verse-wrap .stButton button { background: """ + t["accent_soft"] + """ !important; color: """ + t["accent"] + """ !important; border: 0.5px solid """ + t["accent"] + """60 !important; border-radius: 8px !important; font-size: 0.78rem !important; font-weight: 500 !important; padding: 6px 16px !important; white-space: nowrap !important; }
     .save-verse-wrap .stButton button:hover { background: """ + t["accent"] + """20 !important; border-color: """ + t["accent"] + """ !important; }
+
+    /* Welcome begin button */
+    .begin-btn .stButton button { background: """ + t["accent"] + """ !important; color: """ + t["bg"] + """ !important; border: none !important; border-radius: 10px !important; font-size: 0.9rem !important; font-weight: 600 !important; padding: 10px 20px !important; }
+    .begin-btn .stButton button:hover { opacity: 0.9 !important; transform: translateY(-1px) !important; }
+
+    /* Text input */
+    .stTextInput input { background: """ + t["card"] + """ !important; color: """ + t["text"] + """ !important; border: 1px solid """ + t["border"] + """ !important; border-radius: 10px !important; font-size: 0.95rem !important; }
+    .stTextInput input:focus { border-color: """ + t["accent"] + """80 !important; }
 
     div[data-baseweb="select"] > div { background:""" + t["card"] + """ !important; border-color:""" + t["border"] + """ !important; color:""" + t["text"] + """ !important; border-radius:10px !important; }
     .stTextArea textarea { background:""" + t["card"] + """ !important; color:""" + t["text"] + """ !important; border: 0.5px solid """ + t["border"] + """ !important; border-radius:12px !important; }
@@ -223,20 +244,26 @@ def ask_gods_word(question):
     verse_context  = "\n".join([m['reference'] + ": " + c[:300] for c, m in zip(verse_chunks, verse_metas)])
     bp_context     = "\n".join([c[:300] for c in bp_chunks])
     sermon_context = "\n".join([c[:300] for c in sermon_chunks])
+
+    user_name = st.session_state.user_name
+
     if is_factual_question(question):
         system_prompt = (
             "You are Gods Word, a warm and caring Bible assistant.\n\n"
             "Answer the factual Bible question accurately and completely, then add a short warm encouraging note.\n\n"
-            "- Give the complete accurate answer\n- Use simple easy to understand language\n"
+            "- Give the complete accurate answer\n"
+            "- Use simple easy to understand language\n"
             "- Add 1-2 sentences of warm encouragement after\n"
-            "- ONLY use the Bible passages provided\n- NEVER mention Billy Graham by name\n\n"
-            "- If the person tells you their name, use it warmly in your response\n\n"
+            "- ONLY use the Bible passages provided\n"
+            "- NEVER mention Billy Graham by name\n"
+            "- The user's name is " + user_name + ". Use their name warmly and naturally\n\n"
             "BIBLE PASSAGES:\n" + verse_context
         )
     else:
         system_prompt = (
             "You are Gods Word, a warm and caring Bible assistant that speaks like a compassionate pastor and friend.\n\n"
-            "RULES:\n- Greetings get a short warm friendly reply only\n"
+            "RULES:\n"
+            "- Greetings get a short warm friendly reply only\n"
             "- Talk like a warm caring FRIEND who knows the Bible deeply\n"
             "- Never sound preachy or like a sermon\n"
             "- Answer ONLY what was asked — use conversation history for context\n"
@@ -247,9 +274,9 @@ def ask_gods_word(question):
             "- Be precise about names, places, and facts\n"
             "- No headers, bullet points, or sections\n"
             "- NEVER offer to pray with the person or do anything an AI cannot do\n"
-            "- If someone asks for a video, just say Here are some relevant videos for you\n\n"
-            "- If the person tells you their name, remember it and use it warmly in your responses\n"
-            "- If you know their name, address them by name occasionally — not every sentence, just naturally\n\n"
+            "- If someone asks for a video, just say Here are some relevant videos for you\n"
+            "- The user's name is " + user_name + ". Use their name warmly and naturally — not every sentence, just occasionally\n"
+            "- Never call them friend — always use their actual name\n\n"
             "BIBLE PASSAGES:\n" + verse_context + "\n\nBIBLE PROJECT CONTENT:\n" + bp_context + "\n\nSERMON CONTENT:\n" + sermon_context
         )
     messages = [{"role": "system", "content": system_prompt}]
@@ -317,7 +344,35 @@ def get_verse_of_the_day(today_date):
     random.seed(today_date)
     return random.choice(popular_verses)
 
-# SIDEBAR
+# ── WELCOME SCREEN ──
+if not st.session_state.user_name:
+    st.markdown(
+        "<div class='welcome-wrap'>"
+        "<div class='welcome-dove'>🕊️</div>"
+        "<div class='welcome-title'>Welcome to Gods Word</div>"
+        "<div class='welcome-sub'>Where Scripture meets the heart</div>"
+        "</div>",
+        unsafe_allow_html=True
+    )
+    col1, col2, col3 = st.columns([2, 3, 2])
+    with col2:
+        name_input = st.text_input(
+            "What's your name?",
+            placeholder="Enter your name...",
+            label_visibility="visible"
+        )
+        st.markdown("<div class='begin-btn'>", unsafe_allow_html=True)
+        if st.button("Let's Begin 🕊️", use_container_width=True):
+            if name_input.strip():
+                st.session_state.user_name = name_input.strip()
+                save_json(USER_NAME_FILE, {"name": name_input.strip()})
+                st.rerun()
+            else:
+                st.warning("Please enter your name to continue!")
+        st.markdown("</div>", unsafe_allow_html=True)
+    st.stop()
+
+# ── SIDEBAR ──
 with st.sidebar:
     st.markdown(
         "<div class='sb-logo-wrap'><span style='font-size:1.3rem'>🕊️</span>"
@@ -325,6 +380,13 @@ with st.sidebar:
         "<div class='sb-tagline'>Where Scripture meets the heart</div></div></div>",
         unsafe_allow_html=True
     )
+
+    # Show user name
+    st.markdown(
+        f"<p style='color:{t['accent']};font-size:0.82rem;padding:4px 4px 0;'>👤 {st.session_state.user_name}</p>",
+        unsafe_allow_html=True
+    )
+
     col1, col2 = st.columns([1.2, 1])
     with col1:
         st.markdown(f"<p style='color:{t['subtext']};font-size:0.78rem;margin-top:8px;'>Theme</p>", unsafe_allow_html=True)
@@ -393,8 +455,12 @@ with st.sidebar:
     if st.button("🗑️  Clear chat", use_container_width=True):
         st.session_state.messages = []
         st.rerun()
+    if st.button("👤  Change name", use_container_width=True):
+        st.session_state.user_name = ""
+        save_json(USER_NAME_FILE, {"name": ""})
+        st.rerun()
 
-# MAIN
+# ── MAIN ──
 st.markdown(
     "<div class='gw-header'><span class='gw-dove'>🕊️</span>"
     "<div class='gw-title'>Gods Word</div>"
@@ -452,6 +518,7 @@ if st.session_state.show_journal:
             )
     st.divider()
 
+# Chat history
 for message in st.session_state.messages:
     role = message["role"]
     icon = "🙏" if role == "user" else "🕊️"

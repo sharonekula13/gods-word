@@ -1,0 +1,252 @@
+[
+  {
+    "question": "What does Paul say about love in 1 Corinthians 13?",
+    "expected_reference": "1Corinthians_13_4",
+    "expected_keywords": ["charity", "suffereth long", "envieth not"]
+  },
+  {
+    "question": "What is the fruit of the Spirit?",
+    "expected_reference": "Galatians_5_22",
+    "expected_keywords": ["love", "joy", "peace", "longsuffering", "gentleness", "goodness", "faith"]
+  },
+  {
+    "question": "What does Jesus say is the greatest commandment?",
+    "expected_reference": "Matthew_22_37",
+    "expected_keywords": ["love", "Lord", "God", "heart", "soul", "mind"]
+  },
+  {
+    "question": "What does John 3:16 say?",
+    "expected_reference": "John_3_16",
+    "expected_keywords": ["God", "loved", "world", "begotten", "Son", "perish", "everlasting life"]
+  },
+  {
+    "question": "What does Psalm 23 say about the Lord as a shepherd?",
+    "expected_reference": "Psalms_23_1",
+    "expected_keywords": ["shepherd", "want", "green pastures", "still waters"]
+  },
+  {
+    "question": "What does Proverbs say about trusting the Lord?",
+    "expected_reference": "Proverbs_3_5",
+    "expected_keywords": ["trust", "Lord", "heart", "lean", "understanding"]
+  },
+  {
+    "question": "What does Jesus say about being the light of the world?",
+    "expected_reference": "Matthew_5_14",
+    "expected_keywords": ["light", "world", "city", "hill", "hidden"]
+  },
+  {
+    "question": "What does Romans 8:28 say about all things working together for good?",
+    "expected_reference": "Romans_8_28",
+    "expected_keywords": ["all things", "good", "love God", "called"]
+  },
+  {
+    "question": "What does Philippians 4:13 say about strength through Christ?",
+    "expected_reference": "Philippians_4_13",
+    "expected_keywords": ["do all things", "Christ", "strengtheneth"]
+  },
+  {
+    "question": "What does Isaiah 40:31 say about those who wait on the Lord?",
+    "expected_reference": "Isaiah_40_31",
+    "expected_keywords": ["wait", "Lord", "renew", "strength", "wings", "eagles"]
+  },
+  {
+    "question": "What does Jeremiah 29:11 say about God's plans?",
+    "expected_reference": "Jeremiah_29_11",
+    "expected_keywords": ["thoughts", "peace", "evil", "expected end"]
+  },
+  {
+    "question": "What does Matthew 6:33 say about seeking the kingdom of God?",
+    "expected_reference": "Matthew_6_33",
+    "expected_keywords": ["seek", "kingdom", "God", "righteousness", "added"]
+  },
+  {
+    "question": "What does Romans 3:23 say about sin?",
+    "expected_reference": "Romans_3_23",
+    "expected_keywords": ["all", "sinned", "come short", "glory of God"]
+  },
+  {
+    "question": "What does John 14:6 say about Jesus being the way?",
+    "expected_reference": "John_14_6",
+    "expected_keywords": ["way", "truth", "life", "no man", "Father", "but by me"]
+  },
+  {
+    "question": "What does Genesis 1:1 say about creation?",
+    "expected_reference": "Genesis_1_1",
+    "expected_keywords": ["beginning", "God", "created", "heaven", "earth"]
+  },
+  {
+    "question": "What does Ephesians 2:8 say about salvation by grace?",
+    "expected_reference": "Ephesians_2_8",
+    "expected_keywords": ["grace", "saved", "faith", "gift of God"]
+  },
+  {
+    "question": "What does James 1:2 say about trials?",
+    "expected_reference": "James_1_2",
+    "expected_keywords": ["joy", "temptations", "divers"]
+  },
+  {
+    "question": "What does 1 Peter 5:7 say about casting your cares?",
+    "expected_reference": "1Peter_5_7",
+    "expected_keywords": ["casting", "care", "careth for you"]
+  },
+  {
+    "question": "What does Hebrews 11:1 say about faith?",
+    "expected_reference": "Hebrews_11_1",
+    "expected_keywords": ["faith", "substance", "hoped for", "evidence", "not seen"]
+  },
+  {
+    "question": "What does Romans 6:23 say about the wages of sin?",
+    "expected_reference": "Romans_6_23",
+    "expected_keywords": ["wages", "sin", "death", "gift", "God", "eternal life"]
+  },
+  {
+    "question": "What does Psalm 46:1 say about God being a refuge?",
+    "expected_reference": "Psalms_46_1",
+    "expected_keywords": ["God", "refuge", "strength", "present help", "trouble"]
+  },
+  {
+    "question": "What does Matthew 11:28 say about rest for the weary?",
+    "expected_reference": "Matthew_11_28",
+    "expected_keywords": ["labour", "heavy laden", "rest"]
+  },
+  {
+    "question": "What does John 1:1 say about the Word?",
+    "expected_reference": "John_1_1",
+    "expected_keywords": ["beginning", "Word", "God"]
+  },
+  {
+    "question": "What does 2 Timothy 3:16 say about scripture?",
+    "expected_reference": "2Timothy_3_16",
+    "expected_keywords": ["scripture", "given by inspiration", "profitable", "doctrine"]
+  },
+  {
+    "question": "What does Psalm 119:105 say about God's word being a lamp?",
+    "expected_reference": "Psalms_119_105",
+    "expected_keywords": ["word", "lamp", "feet", "light", "path"]
+  },
+  {
+    "question": "What does Proverbs 22:6 say about training a child?",
+    "expected_reference": "Proverbs_22_6",
+    "expected_keywords": ["train", "child", "way", "old", "depart not"]
+  },
+  {
+    "question": "What does Romans 12:2 say about renewing your mind?",
+    "expected_reference": "Romans_12_2",
+    "expected_keywords": ["conformed", "world", "transformed", "renewing", "mind"]
+  },
+  {
+    "question": "What does Colossians 3:23 say about working for the Lord?",
+    "expected_reference": "Colossians_3_23",
+    "expected_keywords": ["do it heartily", "Lord", "not unto men"]
+  },
+  {
+    "question": "What does Psalm 27:1 say about the Lord being my light?",
+    "expected_reference": "Psalms_27_1",
+    "expected_keywords": ["Lord", "light", "salvation", "fear", "strength", "afraid"]
+  },
+  {
+    "question": "What does John 10:10 say about abundant life?",
+    "expected_reference": "John_10_10",
+    "expected_keywords": ["thief", "steal", "kill", "destroy", "life", "abundantly"]
+  },
+  {
+    "question": "What are the Ten Commandments?",
+    "expected_reference": "Exodus_20_3",
+    "expected_keywords": ["no other gods", "commandments", "Lord thy God"]
+  },
+  {
+    "question": "What does Jesus say about forgiveness in Matthew 18?",
+    "expected_reference": "Matthew_18_22",
+    "expected_keywords": ["forgive", "seventy times seven"]
+  },
+  {
+    "question": "What does the Sermon on the Mount say about the beatitudes?",
+    "expected_reference": "Matthew_5_3",
+    "expected_keywords": ["blessed", "poor in spirit", "kingdom of heaven"]
+  },
+  {
+    "question": "What does Revelation 21:4 say about no more tears?",
+    "expected_reference": "Revelation_21_4",
+    "expected_keywords": ["tears", "death", "sorrow", "crying", "pain", "former things passed away"]
+  },
+  {
+    "question": "What does Luke 15 say about the prodigal son?",
+    "expected_reference": "Luke_15_11",
+    "expected_keywords": ["son", "father", "far country", "returned", "robe", "fatted calf"]
+  },
+  {
+    "question": "What does Psalm 51 say about a clean heart?",
+    "expected_reference": "Psalms_51_10",
+    "expected_keywords": ["clean heart", "renew", "right spirit"]
+  },
+  {
+    "question": "What does Acts 2 say about the Holy Spirit at Pentecost?",
+    "expected_reference": "Acts_2_1",
+    "expected_keywords": ["Pentecost", "Holy Ghost", "tongues", "fire"]
+  },
+  {
+    "question": "What does Micah 6:8 say about what God requires?",
+    "expected_reference": "Micah_6_8",
+    "expected_keywords": ["justly", "mercy", "humble", "walk", "God"]
+  },
+  {
+    "question": "What does John 15:5 say about abiding in Christ?",
+    "expected_reference": "John_15_5",
+    "expected_keywords": ["vine", "branches", "abideth", "fruit", "without me ye can do nothing"]
+  },
+  {
+    "question": "What does Matthew 28:19 say about the Great Commission?",
+    "expected_reference": "Matthew_28_19",
+    "expected_keywords": ["go", "teach", "nations", "baptizing", "Father", "Son", "Holy Ghost"]
+  },
+  {
+    "question": "What does 1 John 4:8 say about God being love?",
+    "expected_reference": "1John_4_8",
+    "expected_keywords": ["God is love"]
+  },
+  {
+    "question": "What does Psalm 91 say about dwelling in the shelter of God?",
+    "expected_reference": "Psalms_91_1",
+    "expected_keywords": ["secret place", "most High", "shadow", "Almighty"]
+  },
+  {
+    "question": "What does Galatians 2:20 say about being crucified with Christ?",
+    "expected_reference": "Galatians_2_20",
+    "expected_keywords": ["crucified with Christ", "I live", "faith of the Son of God"]
+  },
+  {
+    "question": "What does Ephesians 6:11 say about the armor of God?",
+    "expected_reference": "Ephesians_6_11",
+    "expected_keywords": ["armour of God", "stand", "wiles of the devil"]
+  },
+  {
+    "question": "What does Joshua 1:9 say about being strong and courageous?",
+    "expected_reference": "Joshua_1_9",
+    "expected_keywords": ["strong", "courageous", "afraid", "dismayed", "Lord thy God"]
+  },
+  {
+    "question": "What does Zephaniah 3:17 say about God rejoicing over us?",
+    "expected_reference": "Zephaniah_3_17",
+    "expected_keywords": ["mighty", "save", "rejoice", "joy", "singing"]
+  },
+  {
+    "question": "What does 2 Chronicles 7:14 say about healing the land?",
+    "expected_reference": "2Chronicles_7_14",
+    "expected_keywords": ["humble", "pray", "seek", "turn", "wicked ways", "heal their land"]
+  },
+  {
+    "question": "What does Lamentations 3:22 say about God's mercies being new every morning?",
+    "expected_reference": "Lamentations_3_22",
+    "expected_keywords": ["mercies", "fail not", "new every morning"]
+  },
+  {
+    "question": "What does Matthew 5:16 say about letting your light shine?",
+    "expected_reference": "Matthew_5_16",
+    "expected_keywords": ["light shine", "men", "good works", "glorify", "Father"]
+  },
+  {
+    "question": "What does 1 Corinthians 10:13 say about temptation?",
+    "expected_reference": "1Corinthians_10_13",
+    "expected_keywords": ["temptation", "man", "able to bear", "way to escape"]
+  }
+]

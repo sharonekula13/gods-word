@@ -1,0 +1,57 @@
+name: RAG Eval Gate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          pip install chromadb rank-bm25 sentence-transformers requests nltk
+
+      - name: Download NLTK data
+        run: |
+          python -c "import nltk; nltk.download('punkt')"
+
+      - name: Load KJV Bible into ChromaDB
+        run: python scripts/load_bible.py
+
+      - name: Run baseline eval
+        run: |
+          python eval/run_eval.py --mode baseline --output-dir eval/results
+
+      - name: Check recall threshold
+        run: |
+          python - <<'EOF'
+          import json, sys
+          with open("eval/results/baseline.json") as f:
+              results = json.load(f)
+          recall = results["metrics"]["recall_at_5"]
+          threshold = 45.0  # update this after you get your first real baseline
+          print(f"Recall@5: {recall}% (threshold: {threshold}%)")
+          if recall < threshold:
+              print(f"❌ FAILED: recall@5 dropped below {threshold}%")
+              sys.exit(1)
+          print("✅ PASSED")
+          EOF
+
+      - name: Upload eval results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-results
+          path: eval/results/
