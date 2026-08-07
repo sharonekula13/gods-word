@@ -1,3 +1,9 @@
-echo "youtube-transcript-api" >> requirements.txt
-echo "google-api-python-client" >> requirements.txt
-echo "python-dotenv" >> requirements.txt
+streamlit
+chromadb
+ollama
+python-dotenv
+youtube-transcript-api
+google-api-python-client
+rank-bm25
+sentence-transformers
+requests
