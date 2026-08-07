@@ -211,10 +211,25 @@ def load_collections():
 
 collections = load_collections()
 
+@st.cache_resource
+def load_hybrid_retriever():
+    all_results = collections["bible_verses"].get(limit=40000)
+    corpus_texts = all_results["documents"]
+    corpus_ids = all_results["ids"]
+    from retrieval.hybrid import HybridRetriever
+    return HybridRetriever(collections["bible_verses"], corpus_texts, corpus_ids)
+
 def search_collection(collection, query, n_results=2):
     results = collection.query(query_texts=[query], n_results=n_results)
     return results["documents"][0], results["metadatas"][0]
 
+def search_bible_hybrid(query, n_results=5):
+    retriever = load_hybrid_retriever()
+    result = retriever.search(query, top_k=n_results)
+    docs = [r["text"] for r in result["results"]]
+    # Return empty metadatas list to match existing signature
+    metas = [{"reference": r["id"].replace("_", " ")} for r in result["results"]]
+    return docs, metas
 def is_factual_question(question):
     factual_keywords = ["what are","list","how many","name the","what is the","commandments","beatitudes","fruits of the spirit","apostles","disciples","psalms","proverbs"]
     return any(k in question.lower() for k in factual_keywords)
@@ -238,7 +253,7 @@ def get_relevant_video(question):
 def ask_gods_word(question):
     recent_context = " ".join([m["content"] for m in st.session_state.messages[-4:] if m["role"] == "user"])
     search_query = recent_context + " " + question
-    verse_chunks, verse_metas = search_collection(collections["bible_verses"], search_query, n_results=5)
+    verse_chunks, verse_metas = search_bible_hybrid(search_query, n_results=5)
     bp_chunks, _ = search_collection(collections["bible_project"], search_query)
     sermon_chunks, _ = search_collection(collections["sermons"], search_query)
     verse_context  = "\n".join([m['reference'] + ": " + c[:300] for c, m in zip(verse_chunks, verse_metas)])
