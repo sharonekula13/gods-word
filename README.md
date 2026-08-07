@@ -51,10 +51,11 @@ Query
 
 | Metric | Baseline (pure vector) | Hybrid + Rerank |
 |---|---|---|
-| Recall@5 | — | — |
-| MRR | — | — |
-| Keyword Hit Rate | — | — |
-| Latency p95 | — | — |
+| Recall@5 | 26.0% | 36.0% |
+| MRR | 0.198 | 0.258 |
+| Keyword Hit Rate | 24.0% | 30.0% |
+| Latency p50 | 75ms | 157ms |
+| Latency p95 | 99ms | 220ms |
 
 *Run `python eval/run_eval.py --mode baseline` then `--mode hybrid` to fill in your numbers.*
 
