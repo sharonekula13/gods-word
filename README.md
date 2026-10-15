@@ -1,191 +1,199 @@
-# Gods Word 🕊️
+# God's Word
 
-### Where Scripture Meets the Heart — A Production RAG Bible Chatbot
+God's Word is a Bible study assistant built with Python and Streamlit. It uses retrieval-augmented generation (RAG) to find relevant Bible passages and supporting teaching content, then generate conversational responses using Llama 3 through Ollama.
 
-Gods Word is a production-grade RAG (Retrieval Augmented Generation) Bible chatbot built without LangChain. It answers questions about Scripture drawing from the KJV Bible, Billy Graham sermons, and Bible Project transcripts — using hybrid retrieval, cross-encoder reranking, and a versioned evaluation harness.
+The application combines Scripture search, related video recommendations, saved verses, and a prayer journal in a single interface. It is a personal project intended to support Bible study and reflection.
 
----
+## Features
 
-## 🏗️ Architecture
+- **Conversational Bible Q&A:** Ask questions using natural language.
+- **Context-aware responses:** Recent conversation history helps interpret follow-up questions.
+- **Scripture retrieval:** Search Bible verses stored in ChromaDB.
+- **Supporting content:** Retrieve passages from Billy Graham sermon transcripts and BibleProject transcripts.
+- **Video recommendations:** Find related YouTube videos when requested.
+- **Daily verse:** Display a verse selected for the current date.
+- **Topic browsing:** Explore subjects such as hope, faith, forgiveness, and prayer.
+- **Saved verses:** Save verses for later reference.
+- **Prayer journal:** Record personal reflections and prayer entries.
+- **Appearance settings:** Switch between light and dark themes.
 
-```
-Query
-  │
-  ├── BM25 (keyword search over corpus)
-  ├── ChromaDB (dense vector search)
-  │
-  └── Reciprocal Rank Fusion (merge results)
-        │
-        └── Cross-Encoder Reranker (bge-reranker / ms-marco)
-              │
-              └── Llama 3 (local via Ollama) → Answer
-```
+## How It Works
 
-**Three data sources:**
-| Source | Documents | Type |
-|---|---|---|
-| KJV Bible | 31,102 verses | Verse-level chunks |
-| Billy Graham Sermons | ~80 videos | 500-word chunks with overlap |
-| Bible Project | ~19 videos | 500-word chunks with overlap |
+1. Bible verses and video transcripts are loaded into persistent ChromaDB collections.
+2. Transcripts are divided into approximately 500-word chunks with 50-word overlap.
+3. The application searches the collections using the user's question and recent conversation context.
+4. Retrieved passages are included in the prompt sent to Llama 3 through Ollama.
+5. The response is displayed in the Streamlit chat interface. Related video links are shown when requested.
 
----
+The current implementation uses ChromaDB vector retrieval. It does not implement BM25 search, reciprocal rank fusion, or cross-encoder reranking.
 
-## ✨ Features
+## Technology
 
-- 🔍 **Hybrid Retrieval** — BM25 + dense vector search fused with Reciprocal Rank Fusion
-- 🎯 **Cross-Encoder Reranking** — Re-ranks top candidates for precision
-- 📊 **Versioned Eval Harness** — 50-question labeled set measuring recall@5, MRR, keyword hit rate
-- 🚦 **CI Eval Gate** — GitHub Actions fails any PR that drops retrieval quality below threshold
-- 🕊️ **Gospel Chatbot** — Warm, pastoral answers grounded in Scripture
-- 📖 **Daily Verse of the Day**
-- 🔍 **Browse by Topic** — Hope, Fear, Love, Forgiveness, and more
-- ⭐ **Favourite Verses**
-- 📝 **Prayer Journal**
-- 🌙 **Dark & Light Mode**
-- 📺 **YouTube Video Links** — Relevant sermons retrieved semantically
-- 💬 **Multi-turn Conversation Memory**
-
----
-
-## 📊 Eval Results
-
-| Metric | Baseline (pure vector) | Hybrid + Rerank |
-|---|---|---|
-| Recall@5 | 26.0% | 36.0% |
-| MRR | 0.198 | 0.258 |
-| Keyword Hit Rate | 24.0% | 30.0% |
-| Latency p50 | 75ms | 157ms |
-| Latency p95 | 99ms | 220ms |
-
-*Run `python eval/run_eval.py --mode baseline` then `--mode hybrid` to fill in your numbers.*
-
----
-
-## 🛠️ Tech Stack
-
-| Layer | Tool |
-|---|---|
+| Component | Technology |
+| --- | --- |
 | Language | Python |
-| UI | Streamlit |
-| LLM | Ollama (Llama 3 — runs locally) |
-| Vector Database | ChromaDB |
-| Keyword Search | rank-bm25 |
-| Reranker | sentence-transformers (cross-encoder/ms-marco-MiniLM-L-6-v2) |
-| Transcript Fetching | youtube-transcript-api |
-| YouTube Metadata | YouTube Data API v3 |
-| CI | GitHub Actions |
+| Interface | Streamlit |
+| Language model | Llama 3 |
+| Local model runtime | Ollama |
+| Vector database | ChromaDB |
+| Video metadata | YouTube Data API v3 |
+| Transcript retrieval | youtube-transcript-api |
+| Environment configuration | python-dotenv |
+| Local preferences and journal storage | JSON files |
 
----
+## Setup
 
-## ⚙️ Setup Instructions
+Run the following commands from the project directory unless otherwise specified.
 
-### 1. Clone the repo
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/sharonekula13/gods-word.git
 cd gods-word
 ```
 
-### 2. Install dependencies
+### 2. Create a virtual environment
 
 ```bash
-pip install -r requirements.txt
+python3 -m venv .venv
+source .venv/bin/activate
 ```
 
-### 3. Set up `.env`
+### 3. Install dependencies
 
 ```bash
+python -m pip install streamlit chromadb ollama python-dotenv requests google-api-python-client youtube-transcript-api
+```
+
+### 4. Configure YouTube access
+
+Create a `.env` file in the project root:
+
+```dotenv
 YOUTUBE_API_KEY=your_youtube_api_key_here
 ```
 
-Get your key from [Google Cloud Console](https://console.cloud.google.com).
+The transcript-fetching scripts use this key to access YouTube video metadata. Enable YouTube Data API v3 for the associated Google Cloud project.
 
-### 4. Install and start Ollama
+### 5. Set up Ollama
+
+Install Ollama from https://ollama.com, then download the model:
 
 ```bash
-# Download from https://ollama.com then:
 ollama pull llama3
+```
+
+Ensure Ollama is running before starting the application. If it is not already running through the desktop application, start it in a separate terminal:
+
+```bash
 ollama serve
 ```
 
-### 5. Build the ChromaDB (run in order)
+### 6. Prepare the data
+
+Create the working directories and load the Bible:
 
 ```bash
-python scripts/fetch_latest.py          # Fetch Billy Graham transcripts
-python scripts/fetch_bible_project.py   # Fetch Bible Project transcripts
-python scripts/process_transcript.py    # Clean and chunk transcripts
-python scripts/load_bible.py            # Load KJV Bible (31k verses)
-python scripts/load_to_chroma.py        # Load sermons
-python scripts/load_bible_project.py    # Load Bible Project
+mkdir -p transcripts processed
+python scripts/load_bible.py
 ```
 
-### 6. Run the app
+Fetch and process sermon transcripts:
+
+```bash
+python scripts/fetch_latest.py
+python scripts/process_transcript.py
+python scripts/load_to_chroma.py
+```
+
+Then fetch and load BibleProject transcripts:
+
+```bash
+python scripts/fetch_bible_project.py
+python scripts/load_bible_project.py
+```
+
+This order keeps BibleProject transcripts out of the initial sermon-processing step. The sermon loader reads every JSON file in `processed/`, so check that directory before rerunning it.
+
+Data preparation requires internet access. Transcript availability, API quotas, and model downloads may affect setup time.
+
+### 7. Start the application
 
 ```bash
 streamlit run app.py
 ```
 
-Open `http://localhost:8501` 🎉
+Open http://localhost:8501 in your browser.
 
----
+## Content Updates
 
-## 📊 Running Evaluations
+The project includes a script that checks for recent videos, retrieves available transcripts, and loads new content into ChromaDB:
 
 ```bash
-# Get your baseline numbers FIRST before any changes
-python eval/run_eval.py --mode baseline
-
-# After adding hybrid retrieval:
-python eval/run_eval.py --mode hybrid
-
-# Results saved to eval/results/baseline.json and eval/results/hybrid.json
+python scripts/daily_update.py
 ```
 
----
+The script can be run manually or through an external scheduler. Scheduling is separate from the Streamlit application.
 
-## 📁 Project Structure
+## Project Structure
 
-```
+```text
 gods-word/
-├── app.py                          # Main Streamlit app
-├── retrieval/
-│   ├── __init__.py
-│   └── hybrid.py                   # BM25 + dense + RRF + cross-encoder reranker
-├── eval/
-│   ├── eval_set.json               # 50 labeled Q&A pairs (versioned)
-│   ├── run_eval.py                 # Measures recall@5, MRR, keyword hit rate
-│   └── results/                    # Saved eval runs (baseline.json, hybrid.json)
-├── scripts/
-│   ├── fetch_latest.py             # Fetch Billy Graham transcripts
-│   ├── fetch_bible_project.py      # Fetch Bible Project transcripts
-│   ├── process_transcript.py       # Clean and chunk transcripts
-│   ├── load_bible.py               # Load KJV Bible into ChromaDB
-│   ├── load_to_chroma.py           # Load sermons into ChromaDB
-│   └── load_bible_project.py       # Load Bible Project into ChromaDB
-├── .github/
-│   └── workflows/
-│       └── eval.yml                # CI eval gate — fails PR if recall drops
+├── app.py
 ├── requirements.txt
-└── .env                            # API keys (never commit)
+├── scripts/
+│   ├── fetch_latest.py
+│   ├── fetch_bible_project.py
+│   ├── fetch_telugu.py
+│   ├── process_transcript.py
+│   ├── load_bible.py
+│   ├── load_to_chroma.py
+│   ├── load_bible_project.py
+│   ├── chatbot.py
+│   └── daily_update.py
+├── transcripts/
+├── processed/
+└── chroma_db/
 ```
 
----
+The data directories are created locally during setup. User preferences, saved verses, and prayer journal entries are also stored locally as JSON files.
 
-## 🔒 Notes
+## Current Limitations
 
-- Never commit `.env` — it contains your API key
-- `transcripts/`, `processed/`, `chroma_db/` are gitignored — regenerate locally
-- Ollama must be running before starting the app
-- CI runs Bible-only eval (no Ollama needed) — sermon evals run locally
+- Responses are generated by a language model and may contain errors. Prompt instructions encourage source-based answers but do not guarantee accuracy.
+- The application does not independently verify generated claims or Bible references.
+- No formal evaluation harness or verified performance benchmarks are included in this version.
+- Transcript availability and quality vary between videos.
+- Preferences and journal entries use shared local files rather than separate authenticated user accounts.
+- The application requires local data preparation and a running Ollama instance.
 
----
+## Planned Improvements
 
-## 🙏 Data Sources
+- Validate Bible references and provide clearer links between answers and retrieved sources.
+- Build an evaluation dataset covering factual questions, follow-up questions, and insufficient-context cases.
+- Improve retrieval for specific books, passages, and topics.
+- Separate transcript processing by source and make ingestion safer to rerun.
+- Add user-specific storage before supporting a shared deployment.
 
-- **KJV Bible** — Public domain
-- **Billy Graham Sermons** — [YouTube Channel](https://www.youtube.com/@billygraham)
-- **Bible Project** — [YouTube Channel](https://www.youtube.com/@thebibleproject)
+## Data Sources
 
----
+- KJV Bible: https://github.com/aruljohn/Bible-kjv
+- Billy Graham sermons: https://www.youtube.com/@billygraham
+- BibleProject: https://www.youtube.com/@thebibleproject
 
-*"Thy word is a lamp unto my feet, and a light unto my path." — Psalm 119:105* 🕊️
+Third-party content remains subject to its applicable rights and usage terms.
+
+## Configuration and Local Data
+
+Keep API keys and personal journal data out of version control. Review `.gitignore` before committing to ensure it excludes:
+
+```text
+.env
+.venv/
+chroma_db/
+transcripts/
+processed/
+favourites.json
+prayer_journal.json
+user_name.json
+```
